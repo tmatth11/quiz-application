@@ -1,9 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using QuizAppApi.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
+builder.Services.AddDbContext<QuizContext>(opt => opt.UseInMemoryDatabase("QuizApp"));
 
 var app = builder.Build();
 
