@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using QuizAppApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("QuizContext") ?? throw new InvalidOperationException("Connection string 'QuizContext' not found.");
 
 // Add services to the container.
 
