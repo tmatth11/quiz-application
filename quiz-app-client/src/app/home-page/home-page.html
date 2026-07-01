@@ -3,5 +3,16 @@
 	<a routerLink="/" class="cursor-pointer">Add New Quiz</a>
 </nav>
 <div class="flex flex-col items-center">
-    <h1 class="font-bold text-3xl mt-2">Quizzes</h1>
+	<h1 class="mt-2 text-3xl font-bold">Quizzes</h1>
+	@if (placeholderMessage() != '') {
+		<div class="flex flex-col items-center text-center">
+			<p class="mt-5 text-lg">{{ placeholderMessage() }}</p>
+		</div>
+	} @else {
+		<div class="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-3">
+			@for (quiz of quizzes(); track quiz.id) {
+				<app-quiz-card [quiz]="quiz" (deleteQuizEvent)="deleteQuiz($event)" />
+			}
+		</div>
+	}
 </div>

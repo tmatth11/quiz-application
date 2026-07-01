@@ -1,0 +1,12 @@
+<div class="my-3 w-75 rounded-md bg-black p-2">
+	<div class="flex gap-3 text-center">
+		<a class="w-15 cursor-pointer rounded-md bg-yellow-600 p-1 font-semibold">Edit</a>
+		<a class="w-15 cursor-pointer rounded-md bg-red-600 p-1 font-semibold" (click)="deleteQuiz(quiz().id)">Delete</a>
+	</div>
+	<h2 class="my-1 truncate text-lg font-semibold text-yellow-100">
+		{{ quiz().title }}
+	</h2>
+	<p class="truncate text-yellow-100">
+		{{ quiz().description }}
+	</p>
+</div>
