@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { catchError, Observable, throwError } from 'rxjs';
-import { Quiz } from '../types';
+import { CreateQuiz, Quiz } from '../types';
 
 @Injectable({
     providedIn: 'root',
@@ -19,6 +19,12 @@ export class QuizService {
 
     deleteQuiz(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/Quiz/${id}`).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    createQuiz(quiz: CreateQuiz): Observable<Quiz> {
+        return this.http.post<Quiz>(`${this.baseUrl}/Quiz`, quiz).pipe(
             catchError(this.handleError)
         );
     }

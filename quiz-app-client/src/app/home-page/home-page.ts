@@ -2,10 +2,11 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { QuizService } from '../api/quiz-service';
 import { Quiz } from '../types';
 import { QuizCard } from '../quiz-card/quiz-card';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-home-page',
-    imports: [QuizCard],
+    imports: [QuizCard, RouterLink],
     templateUrl: './home-page.html',
     styleUrl: './home-page.css',
 })

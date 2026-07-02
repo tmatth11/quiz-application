@@ -12,10 +12,20 @@ export interface AnswerChoices {
     isCorrect: boolean;
 }
 
+interface CreateAnswerChoices {
+    content: string;
+    isCorrect: boolean;
+}
+
 export interface Questions {
     id: number;
     content: string;
     answerChoices: AnswerChoices[];
+}
+
+interface CreateQuestions {
+    content: string;
+    answerChoices: CreateAnswerChoices[];
 }
 
 export interface Quiz {
@@ -23,4 +33,10 @@ export interface Quiz {
     title: string;
     description: string;
     questions: Questions[]
-};
+}
+
+export interface CreateQuiz {
+    title: string;
+    description: string;
+    questions: CreateQuestions[];
+}

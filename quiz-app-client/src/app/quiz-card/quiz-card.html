@@ -1,7 +1,7 @@
 <div class="my-3 w-75 rounded-md bg-black p-2">
 	<div class="flex gap-3 text-center">
-		<a class="w-15 cursor-pointer rounded-md bg-yellow-600 p-1 font-semibold">Edit</a>
-		<a class="w-15 cursor-pointer rounded-md bg-red-600 p-1 font-semibold" (click)="deleteQuiz(quiz().id)">Delete</a>
+		<a class="w-15 cursor-pointer rounded-md text-white bg-yellow-600 p-1 font-semibold" routerLink="/edit-quiz/{{quiz().id}}">Edit</a>
+		<a class="w-15 cursor-pointer rounded-md text-white bg-red-600 p-1 font-semibold" (click)="deleteQuiz(quiz().id)">Delete</a>
 	</div>
 	<h2 class="my-1 truncate text-lg font-semibold text-yellow-100">
 		{{ quiz().title }}
