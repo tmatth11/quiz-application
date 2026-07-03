@@ -1,0 +1,41 @@
+<nav class="flex h-15 items-center justify-between bg-black p-3 font-semibold text-yellow-100">
+	<a routerLink="/" class="cursor-pointer text-lg">Back to Home</a>
+</nav>
+<div class="flex flex-col items-center p-2">
+	@if (quiz(); as quiz) {
+		<h1 class="my-2 text-center text-3xl font-bold break-all">{{ quiz.title }}</h1>
+		<p class="mb-5 text-center break-all">{{ quiz.description }}</p>
+		<form
+            [formGroup]="takeQuizForm"
+			(ngSubmit)="handleSubmit()"
+			class="mb-2 flex flex-col items-center rounded-md bg-black p-3 sm:w-100 "
+		>
+			<div formArrayName="questions">
+			    @for (question of quiz.questions; track question.id; let i = $index) {
+    				<div [formGroupName]="i">
+    				    <legend class="text-yellow-100">
+        					<span class="font-bold">#{{ question.id }}:</span> {{ question.content }}
+        				</legend>
+        				<div formArrayName="answers" class="mb-2">
+        					@for (answer of question.answerChoices; track answer.id; let j = $index) {
+        						<label class="flex items-center gap-2 text-yellow-100">
+        							<input type="checkbox" [formControlName]="j" />
+        							<span>{{ answer.content }}</span>
+        						</label>
+        					}
+        				</div>
+    				</div>
+    			}
+			</div>
+			<button
+				type="submit"
+                [disabled]="takeQuizForm.invalid"
+				class="cursor-pointer rounded-md bg-yellow-500 text-white disabled:cursor-default w-25 disabled:opacity-75"
+			>
+				Submit
+			</button>
+		</form>
+	} @else {
+		<p class="text-lg">{{ placeholderMessage() }}</p>
+	}
+</div>
