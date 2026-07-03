@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { QuizService } from '../api/quiz-service';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidatorFn, Validators, ValidationErrors } from '@angular/forms';
@@ -28,13 +28,53 @@ export class QuizForm {
         ])
     });
 
-    private createQuestion(): FormGroup {
+    constructor() {
+        effect(() => {
+            if (this.canEdit()) {
+                this.placeholderMessage.set("Loading...");
+
+                this.quizService.getQuiz(this.id()!).subscribe({
+                    next: quiz => {
+                        this.placeholderMessage.set('');
+
+                        this.quizForm.patchValue({
+                            title: quiz.title,
+                            description: quiz.description
+                        });
+
+                        this.questions.clear();
+
+                        quiz.questions.forEach(question => {
+                            this.questions.push(
+                                this.createQuestion(
+                                    question.content,
+                                    question.answerChoices
+                                )
+                            );
+                        });
+                    },
+                    error: error => {
+                        this.placeholderMessage.set(error.message);
+                    }
+                });
+            }
+        });
+    }
+
+    private createQuestion(
+        question = '',
+        answers: { content: string; isCorrect: boolean }[] = [
+            { content: '', isCorrect: false },
+            { content: '', isCorrect: false },
+        ]
+    ): FormGroup {
         return this.formBuilder.group({
-            question: ['', Validators.required],
-            answerChoices: this.formBuilder.array([
-                this.createAnswerChoice(),
-                this.createAnswerChoice()
-            ],
+            question: [question, Validators.required],
+            answerChoices: this.formBuilder.array(
+                answers.map(answer =>
+                    this.createAnswerChoice(answer.content, answer.isCorrect)
+                )
+                ,
                 {
                     validators: [
                         Validators.minLength(2),
@@ -45,10 +85,13 @@ export class QuizForm {
         });
     }
 
-    private createAnswerChoice(): FormGroup {
+    private createAnswerChoice(
+        content = '',
+        isCorrect = false
+    ): FormGroup {
         return this.formBuilder.group({
-            answerChoice: this.formBuilder.control('', Validators.required),
-            isCorrect: [false],
+            answerChoice: [content, Validators.required],
+            isCorrect: [isCorrect],
         });
     }
 
@@ -62,6 +105,13 @@ export class QuizForm {
 
             return hasCorrectAnswer ? null : { noCorrectAnswer: true };
         }
+    }
+
+    private displayErrorMessage(errorMessage: string) {
+        this.errorMessage.set(errorMessage);
+        setTimeout(() => {
+            this.errorMessage.set('');
+        }, 3000);
     }
 
     get questions() {
@@ -100,18 +150,6 @@ export class QuizForm {
     }
 
     handleSubmit() {
-        console.log(`Quiz Title: ${this.quizForm.value.title}`);
-        console.log(`Quiz Description: ${this.quizForm.value.description}`);
-        console.log(`Question Length: ${this.questions.length}`)
-        for (let i = 0; i < this.questions.length; ++i) {
-            console.log(`Question #${i + 1}: ${this.getQuestion(i)}`);
-            for (let j = 0; j < this.getAnswerChoices(i).length; ++j) {
-                const answer = this.getAnswerChoice(i, j).value;
-                console.log(`Answer #${j + 1}: ${answer.answerChoice}`);
-                console.log(`Correct Answer: ${answer.isCorrect}`);
-            }
-        }
-
         const newQuiz: CreateQuiz = {
             title: this.quizForm.value.title!,
             description: this.quizForm.value.description!,
@@ -125,7 +163,14 @@ export class QuizForm {
         };
 
         if (this.canEdit()) {
-
+            this.quizService.updateQuiz(this.id()!, newQuiz).subscribe({
+                next: () => {
+                    this.router.navigate(['/']);
+                },
+                error: error => {
+                    this.displayErrorMessage(error.message);
+                }
+            })
         }
         else {
             this.quizService.createQuiz(newQuiz).subscribe({
@@ -133,10 +178,7 @@ export class QuizForm {
                     this.router.navigate(['/']);
                 },
                 error: error => {
-                    this.errorMessage.set(error.message);
-                    setTimeout(() => {
-                        this.errorMessage.set('');
-                    }, 3000);
+                    this.displayErrorMessage(error.message);
                 }
             });
         }

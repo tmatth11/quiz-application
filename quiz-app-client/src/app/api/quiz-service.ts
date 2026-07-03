@@ -17,6 +17,12 @@ export class QuizService {
         );
     }
 
+    getQuiz(id: number): Observable<Quiz> {
+        return this.http.get<Quiz>(`${this.baseUrl}/Quiz/${id}`).pipe(
+            catchError(this.handleError)
+        );
+    }
+
     deleteQuiz(id: number): Observable<void> {
         return this.http.delete<void>(`${this.baseUrl}/Quiz/${id}`).pipe(
             catchError(this.handleError)
@@ -25,6 +31,12 @@ export class QuizService {
 
     createQuiz(quiz: CreateQuiz): Observable<Quiz> {
         return this.http.post<Quiz>(`${this.baseUrl}/Quiz`, quiz).pipe(
+            catchError(this.handleError)
+        );
+    }
+
+    updateQuiz(id: number, quiz: CreateQuiz): Observable<Quiz> {
+        return this.http.put<Quiz>(`${this.baseUrl}/Quiz/${id}`, quiz).pipe(
             catchError(this.handleError)
         );
     }
