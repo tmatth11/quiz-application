@@ -6,31 +6,58 @@
 		<h1 class="my-2 text-center text-3xl font-bold break-all">{{ quiz.title }}</h1>
 		<p class="mb-5 text-center break-all">{{ quiz.description }}</p>
 		<form
-            [formGroup]="takeQuizForm"
+			[formGroup]="takeQuizForm"
 			(ngSubmit)="handleSubmit()"
-			class="mb-2 flex flex-col items-center rounded-md bg-black p-3 sm:w-100 "
+			class="mb-2 flex flex-col items-center rounded-md bg-black p-3 sm:w-100"
 		>
 			<div formArrayName="questions">
-			    @for (question of quiz.questions; track question.id; let i = $index) {
-    				<div [formGroupName]="i">
-    				    <legend class="text-yellow-100">
-        					<span class="font-bold">#{{ question.id }}:</span> {{ question.content }}
-        				</legend>
-        				<div formArrayName="answers" class="mb-2">
-        					@for (answer of question.answerChoices; track answer.id; let j = $index) {
-        						<label class="flex items-center gap-2 text-yellow-100">
-        							<input type="checkbox" [formControlName]="j" />
-        							<span>{{ answer.content }}</span>
-        						</label>
-        					}
-        				</div>
-    				</div>
-    			}
+				@for (question of quiz.questions; track question.id; let i = $index) {
+					<div [formGroupName]="i">
+						<legend class="text-yellow-100">
+							<span class="font-bold">#{{ i + 1 }}:</span> {{ question.content }}
+							@if (submitted()) {
+								@if (questionResults()[i]) {
+									<span class="font-semibold text-green-500">Correct</span>
+								} @else {
+									<span class="font-semibold text-red-500">Incorrect</span>
+								}
+							}
+						</legend>
+						<div formArrayName="answers" class="mb-2">
+							@for (
+								answer of question.answerChoices;
+								track answer.id;
+								let j = $index
+							) {
+								<label class="flex items-center gap-2 text-yellow-100">
+									<input type="checkbox" [formControlName]="j" />
+									<span>{{ answer.content }}</span>
+									@if (submitted()) {
+										@if (answerResults()[i][j]) {
+											<span class="font-semibold text-green-500"
+												>Correct</span
+											>
+										} @else {
+											<span class="font-semibold text-red-500"
+												>Incorrect</span
+											>
+										}
+									}
+								</label>
+							}
+						</div>
+					</div>
+				}
 			</div>
+			@if (submitted()) {
+				<p class="mb-3 text-center text-lg font-bold text-yellow-100">
+					Score: {{ score() }} / {{ quiz!.questions.length }}
+				</p>
+			}
 			<button
 				type="submit"
-                [disabled]="takeQuizForm.invalid"
-				class="cursor-pointer rounded-md bg-yellow-500 text-white disabled:cursor-default w-25 disabled:opacity-75"
+				[disabled]="takeQuizForm.invalid"
+				class="w-25 cursor-pointer rounded-md bg-yellow-500 text-white disabled:cursor-default disabled:opacity-75"
 			>
 				Submit
 			</button>
