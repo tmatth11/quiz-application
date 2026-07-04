@@ -2,13 +2,12 @@ using Microsoft.EntityFrameworkCore;
 using QuizAppApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("QuizContext") ?? throw new InvalidOperationException("Connection string 'QuizContext' not found.");
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<QuizContext>(opt => opt.UseInMemoryDatabase("QuizApp"));
+builder.Services.AddDbContext<QuizContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("QuizDb")));
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularDev", policy =>
