@@ -13,29 +13,43 @@ The client allows users to perform those operations, along with taking their qui
 git clone https://github.com/tmatth11/quiz-application.git
 ```
 
-2. Switch to the server directory
+# Usage
+
+1. Switch to the server directory
 ```
 cd quiz-application/QuizAppApi
 ```
 
-3. Start the server
+2. Start the server
 ```
 dotnet run
 ```
 
-4. Switch to the client directory (in another terminal)
+3. Switch to the client directory (in another terminal)
 ```
 cd quiz-application/quiz-app-client
 ```
 
-5. Install the necessary packages
+4. Install the necessary packages
 ```
 npm install
 ```
 
-6. Start the client
+5. Start the client
 ```
 npm start
 ```
 
-7. Navigate to http://localhost:4200/ on the browser
+6. Navigate to http://localhost:4200/ on the browser
+
+# Testing
+
+1. Navigate to the API test directory
+```
+cd QuizAppApi.Tests
+```
+
+2. Run tests
+```
+dotnet test
+```
