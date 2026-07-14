@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="../QuizAppApi.Tests/QuizAppApi.Tests.csproj" Id="aefcf7be-4de6-468c-8204-b8b19a3c2ba6" />
   <Project Path="QuizAppApi.csproj" />
 </Solution>

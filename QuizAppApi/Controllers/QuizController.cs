@@ -79,7 +79,7 @@ public class QuizController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return TypedResults.NoContent();
+        return TypedResults.Ok(ToDTO(quiz));
     }
 
     // POST: api/Quiz

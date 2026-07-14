@@ -13,5 +13,5 @@ public class QuestionRequestDTO
 {
     public string? Content { get; set; }
 
-    public List<AnswerChoiceDTO> AnswerChoices { get; set; } = [];
+    public List<AnswerChoiceRequestDTO> AnswerChoices { get; set; } = [];
 }

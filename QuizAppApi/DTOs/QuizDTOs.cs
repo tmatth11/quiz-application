@@ -17,5 +17,5 @@ public class QuizRequestDTO
 
     public string? Description { get; set; }
 
-    public List<QuestionDTO> Questions { get; set; } = [];
+    public List<QuestionRequestDTO> Questions { get; set; } = [];
 }
