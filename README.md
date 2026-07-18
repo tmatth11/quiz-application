@@ -2,7 +2,7 @@
 
 <img width="1916" height="904" alt="image" src="https://github.com/user-attachments/assets/e9bc05bd-4f2f-4b52-94e5-17d0f78aa8af" />
 
-This quiz application is a personal project created with ASP.NET Core in .NET 10 and Angular 22. 
+This quiz application is a personal project created with ASP.NET Core in .NET 10 and Angular 21. 
 It features a local Microsoft SQL Server database to support the functionality for viewing, creating, editing, and deleting quizzes. 
 The client allows users to perform those operations, along with taking their quizzes, right in the browser.
 
